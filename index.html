@@ -2,179 +2,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zafran Hacker Message</title><link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
+<title>Jummah Mubarak</title><link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
 body {
   margin: 0;
-  background: black;
-  color: #00ff99;
-  font-family: 'Poppins', monospace;
+  background: linear-gradient(to bottom, #020024, #090979, #000000);
+  color: white;
+  font-family: 'Poppins', sans-serif;
   overflow: hidden;
-}
-
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-  padding: 20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+  padding:20px;
 }
 
 .text {
-  font-size: 18px;
-  line-height: 1.8;
-  border-right: 2px solid #00ff99;
-  white-space: pre-line;
-  overflow: hidden;
-  animation: blink 1s infinite;
+  font-size:18px;
+  line-height:1.8;
+  max-width:320px;
+  animation: fadeIn 2s ease-in-out;
 }
 
 .arabic {
-  font-family: 'Amiri', serif;
-  font-size: 20px;
-  color: #00ffaa;
+  font-family:'Amiri', serif;
+  font-size:22px;
+  color:#ffd700;
+  margin:10px 0;
 }
 
-@keyframes blink {
-  50% { border-color: transparent; }
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(20px);} 
+  to {opacity:1; transform: translateY(0);} 
 }
 
-.tap {
-  position: fixed;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
-  font-size: 14px;
-  opacity: 0.7;
+/* moon */
+.moon {
+  position:fixed;
+  top:60px;
+  right:40px;
+  width:80px;
+  height:80px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 30px #fff;
 }
 
-/* Tasbeeh Button */
+/* stars */
+.star {
+  position:fixed;
+  width:2px;
+  height:2px;
+  background:white;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from {opacity:0.2;} 
+  to {opacity:1;} 
+}
+
+/* mosque */
+.mosque {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:150px;
+  background:url('https://i.ibb.co/4fKQ7sH/mosque-silhouette.png') repeat-x bottom;
+  background-size:contain;
+  opacity:0.3;
+}
+
+/* tasbeeh */
 .tasbeeh {
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: transparent;
-  border: 2px solid #00ffaa;
-  color: #00ffaa;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tasbeeh:active {
-  transform: translateX(-50%) scale(0.9);
-  background: #00ffaa;
-  color: black;
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ffd700;
+  border:none;
+  color:black;
+  padding:10px 20px;
+  border-radius:30px;
 }
 
 .counter {
+  position:fixed;
+  bottom:80px;
+  width:100%;
+  text-align:center;
+}
+
+/* clouds */
+.cloud {
   position: fixed;
-  bottom: 100px;
-  width: 100%;
-  text-align: center;
-  font-size: 18px;
-  color: #00ffaa;
+  top: 80px;
+  width: 200px;
+  height: 60px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  filter: blur(8px);
+  animation: moveClouds linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.08);
+  width: 100px;
+  height: 80px;
+  top: -20px;
+  left: 20px;
+  border-radius: 50%;
+}
+
+.cloud::after {
+  width: 120px;
+  height: 90px;
+  left: 80px;
+}
+
+@keyframes moveClouds {
+  from { transform: translateX(-250px); }
+  to { transform: translateX(110vw); }
 }
 
 </style></head>
-<body><canvas id="matrix"></canvas>
-
-<div class="container">
+<body><div class="moon"></div>
+<div class="cloud" style="animation-duration: 60s;"></div>
+<div class="cloud" style="top:120px; animation-duration: 90s;"></div>
+<div class="cloud" style="top:180px; animation-duration: 75s;"></div>
+<div class="mosque"></div><div class="container">
   <div class="text" id="typing"></div>
-</div><div class="counter" id="count">Tasbeeh Count: 0</div>
-<div class="tap">Tap anywhere to enable sound 🔊</div>
-<button class="tasbeeh" onclick="tasbeehClick()">SubhanAllah 🤍</button><audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio><script>
-// Matrix Effect
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-
-const letters = "ZAFRAN HACKER 010101 LOVE YOU";
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = [];
-
-for (let x = 0; x < columns; x++) drops[x] = 1;
-
-function draw() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#00ff99";
-  ctx.font = fontSize + "px monospace";
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters[Math.floor(Math.random() * letters.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-      drops[i] = 0;
-
-    drops[i]++;
-  }
+</div><div class="counter" id="count">Tasbeeh: 0</div>
+<button class="tasbeeh" onclick="tasbeehClick()">SubhanAllah 🤍</button><script>
+// stars generate
+for(let i=0;i<50;i++){
+ let s=document.createElement('div');
+ s.className='star';
+ s.style.top=Math.random()*100+'%';
+ s.style.left=Math.random()*100+'%';
+ document.body.appendChild(s);
 }
 
-setInterval(draw, 33);
+// message
+const msg=`Jummah Mubarak 🤲\n\nAaj ka din rehmaton ka din hai...\n\n<span class="arabic">اللّٰهُمَّ اجْعَلْهَا مِنْ نَصِيبِي</span>\n\n(Ae Allah, usay meri qismat ka hissa bana de)\n\nAaj ke din meri dua hai...\nAllah tumhein hamesha khush rakhe 💫\n\nAur agar meri koi dua qabool ho...\nto wo sirf tum ho ❤️\n\n- Zafran`;
 
-// Typing Effect
-const message = `> system booting...
-> access granted ✔
-
-Good Morning ❤️
-
-Tumhari yaad ke sath har subah shuru hoti hai...
-Aur dil se sirf ek dua nikalti hai 🤲
-
-<span class="arabic">اللّٰهُمَّ اجْعَلْهَا مِنْ نَصِيبِي</span>
-
-(Ae Allah, usay meri qismat ka hissa bana de)
-
-Tum sirf ek khwahish nahi...
-balke meri har dua ka hissa ho 💫
-
-Allah tumhein hamesha khush rakhe...
-aur agar naseeb mein likha ho...
-to hamesha mere sath rakhe ❤️
-
-- Zafran`;
-
-let i = 0;
-function typing() {
-  if (i < message.length) {
-    document.getElementById("typing").innerHTML += message.charAt(i);
-    i++;
-    setTimeout(typing, 40);
-  }
+let i=0;
+function type(){
+ if(i<msg.length){
+  document.getElementById('typing').innerHTML+=msg.charAt(i);
+  i++;
+  setTimeout(type,40);
+ }
 }
 
-typing();
+type();
 
-// Music Fix
-const music = document.getElementById("bgMusic");
-function startMusic() {
-  music.play();
+// tasbeeh
+let count=0;
+function tasbeehClick(){
+ count++;
+ document.getElementById('count').innerText="Tasbeeh: "+count;
 }
-['click','touchstart'].forEach(e => {
-  document.body.addEventListener(e, startMusic, { once: true });
-});
 
-// Tasbeeh Counter
-let count = 0;
-function tasbeehClick() {
-  count++;
-  document.getElementById("count").innerText = "Tasbeeh Count: " + count;
+// noor
+function noor(x,y){
+ for(let i=0;i<10;i++){
+  const p=document.createElement('div');
+  p.style.position='fixed';
+  p.style.left=x+'px';
+  p.style.top=y+'px';
+  p.style.width='5px';
+  p.style.height='5px';
+  p.style.background='#ffd700';
+  p.style.boxShadow='0 0 10px #ffd700';
+  document.body.appendChild(p);
+
+  const dx=(Math.random()-0.5)*100;
+  const dy=(Math.random()-0.5)*100;
+
+  p.animate([
+    {transform:'translate(0,0)',opacity:1},
+    {transform:`translate(${dx}px,${dy}px)`,opacity:0}
+  ],{duration:800});
+
+  setTimeout(()=>p.remove(),800);
+ }
 }
+
+document.addEventListener('click',e=>noor(e.clientX,e.clientY));
+
 </script></body>
 </html>
