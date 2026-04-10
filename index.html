@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jummah Mubarak</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Nastaliq+Urdu&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #020024, #090979, #000000);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+.container {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+  padding:20px;
+}
+
+.text {
+  font-size:18px;
+  line-height:1.9;
+  max-width:330px;
+}
+
+/* Har word ka first letter big */
+.word::first-letter {
+  font-size:28px;
+  font-weight:bold;
+  color:#ffd700;
+}
+
+.arabic {
+  font-family:'Amiri', serif;
+  font-size:24px;
+  color:#ffd700;
+  margin:12px 0;
+  display:block;
+  text-shadow: 0 0 8px rgba(255,215,0,0.6), 0 0 15px rgba(255,215,0,0.4);
+}
+
+.urdu {
+  font-family:'Noto Nastaliq Urdu', serif;
+  font-size:18px;
+  color:#ddd;
+  text-align:right;
+  direction: rtl;
+  margin-bottom:10px;
+}
+
+/* Moon */
+.moon {
+  position:fixed;
+  top:60px;
+  right:40px;
+  width:80px;
+  height:80px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 30px #fff;
+}
+
+/* Stars */
+.star {
+  position:fixed;
+  width:2px;
+  height:2px;
+  background:white;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from {opacity:0.2;}
+  to {opacity:1;}
+}
+
+/* Mosque */
+.mosque {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:150px;
+  background:url('https://i.ibb.co/4fKQ7sH/mosque-silhouette.png') repeat-x bottom;
+  background-size:contain;
+  opacity:0.3;
+}
+
+/* Clouds */
+.cloud {
+  position: fixed;
+  top: 80px;
+  width: 200px;
+  height: 60px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  filter: blur(8px);
+  animation: moveClouds linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.08);
+  width: 100px;
+  height: 80px;
+  top: -20px;
+  left: 20px;
+  border-radius: 50%;
+}
+
+.cloud::after {
+  width: 120px;
+  height: 90px;
+  left: 80px;
+}
+
+@keyframes moveClouds {
+  from { transform: translateX(-250px); }
+  to { transform: translateX(110vw); }
+}
+
+/* Tasbeeh */
+.tasbeeh {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ffd700;
+  border:none;
+  color:black;
+  padding:10px 20px;
+  border-radius:30px;
+}
+
+.counter {
+  position:fixed;
+  bottom:80px;
+  width:100%;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="moon"></div>
+
+<div class="cloud" style="animation-duration:60s;"></div>
+<div class="cloud" style="top:120px; animation-duration:90s;"></div>
+<div class="cloud" style="top:180px; animation-duration:75s;"></div>
+
+<div class="mosque"></div>
+
+<div class="container">
+  <div class="text" id="typing"></div>
+</div>
+
+<div class="counter" id="count">Tasbeeh: 0</div>
+<button class="tasbeeh" onclick="tasbeehClick()">SubhanAllah 🤍</button>
+
+<script>
+
+// Stars
+for(let i=0;i<50;i++){
+ let s=document.createElement('div');
+ s.className='star';
+ s.style.top=Math.random()*100+'%';
+ s.style.left=Math.random()*100+'%';
+ document.body.appendChild(s);
+}
+
+// Message (FINAL)
+const msg = `
+<span class="word">Jummah</span> <span class="word">Mubarak</span> 🤲<br><br>
+
+<span class="word">Aaj</span> ka din rehmaton ka din hai...<br><br>
+
+<span class="arabic">اللّٰهُمَّ اجْعَلْهَا مِنْ نَصِيبِي</span>
+
+<span class="urdu">اے اللہ اسے میری قسمت کا حصہ بنا دے</span>
+
+<span class="word">Aaj</span> ke din meri dua hai...<br>
+<span class="word">Allah</span> tumhein hamesha khush rakhe 💫<br><br>
+
+<span class="word">Aur</span> agar meri koi dua qabool ho...<br>
+<span class="word">to</span> wo sirf tum ho ❤️<br><br>
+
+- Zafran`;
+
+document.getElementById('typing').innerHTML = msg;
+
+// Tasbeeh
+let count=0;
+function tasbeehClick(){
+ count++;
+ document.getElementById('count').innerText="Tasbeeh: "+count;
+}
+
+// Noor effect
+function noor(x,y){
+ for(let i=0;i<10;i++){
+  const p=document.createElement('div');
+  p.style.position='fixed';
+  p.style.left=x+'px';
+  p.style.top=y+'px';
+  p.style.width='5px';
+  p.style.height='5px';
+  p.style.background='#ffd700';
+  p.style.boxShadow='0 0 10px #ffd700';
+  document.body.appendChild(p);
+
+  const dx=(Math.random()-0.5)*100;
+  const dy=(Math.random()-0.5)*100;
+
+  p.animate([
+    {transform:'translate(0,0)',opacity:1},
+    {transform:`translate(${dx}px,${dy}px)`,opacity:0}
+  ],{duration:800});
+
+  setTimeout(()=>p.remove(),800);
+ }
+}
+
+document.addEventListener('click',e=>noor(e.clientX,e.clientY));
+
+</script>
+
+</body>
+</html>
