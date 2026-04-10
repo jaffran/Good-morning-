@@ -1,8 +1,8 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="ur">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jummah Mubarak</title><link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
+<title>Jummah Mubarak</title><!-- Fonts --><link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Nastaliq+Urdu&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
 body {
   margin: 0;
   background: linear-gradient(to bottom, #020024, #090979, #000000);
@@ -22,16 +22,34 @@ body {
 
 .text {
   font-size:18px;
-  line-height:1.8;
-  max-width:320px;
+  line-height:1.9;
+  max-width:330px;
   animation: fadeIn 2s ease-in-out;
+}
+
+/* First letter big style */
+.text::first-letter {
+  font-size:32px;
+  font-weight:bold;
+  color:#ffd700;
 }
 
 .arabic {
   font-family:'Amiri', serif;
-  font-size:22px;
+  font-size:24px;
   color:#ffd700;
-  margin:10px 0;
+  margin:12px 0;
+  display:block;
+  text-shadow: 0 0 8px rgba(255,215,0,0.6), 0 0 15px rgba(255,215,0,0.4);
+}
+
+.urdu {
+  font-family:'Noto Nastaliq Urdu', serif;
+  font-size:18px;
+  color:#ddd;
+  margin-bottom:10px;
+  text-align:right;
+  direction: rtl;
 }
 
 @keyframes fadeIn {
@@ -39,7 +57,6 @@ body {
   to {opacity:1; transform: translateY(0);} 
 }
 
-/* moon */
 .moon {
   position:fixed;
   top:60px;
@@ -51,7 +68,6 @@ body {
   box-shadow:0 0 30px #fff;
 }
 
-/* stars */
 .star {
   position:fixed;
   width:2px;
@@ -65,7 +81,6 @@ body {
   to {opacity:1;} 
 }
 
-/* mosque */
 .mosque {
   position:fixed;
   bottom:0;
@@ -74,26 +89,6 @@ body {
   background:url('https://i.ibb.co/4fKQ7sH/mosque-silhouette.png') repeat-x bottom;
   background-size:contain;
   opacity:0.3;
-}
-
-/* tasbeeh */
-.tasbeeh {
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#ffd700;
-  border:none;
-  color:black;
-  padding:10px 20px;
-  border-radius:30px;
-}
-
-.counter {
-  position:fixed;
-  bottom:80px;
-  width:100%;
-  text-align:center;
 }
 
 /* clouds */
@@ -131,16 +126,35 @@ body {
   to { transform: translateX(110vw); }
 }
 
+.tasbeeh {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ffd700;
+  border:none;
+  color:black;
+  padding:10px 20px;
+  border-radius:30px;
+}
+
+.counter {
+  position:fixed;
+  bottom:80px;
+  width:100%;
+  text-align:center;
+}
+
 </style></head>
 <body><div class="moon"></div>
-<div class="cloud" style="animation-duration: 60s;"></div>
-<div class="cloud" style="top:120px; animation-duration: 90s;"></div>
-<div class="cloud" style="top:180px; animation-duration: 75s;"></div>
+<div class="cloud" style="animation-duration:60s;"></div>
+<div class="cloud" style="top:120px; animation-duration:90s;"></div>
+<div class="cloud" style="top:180px; animation-duration:75s;"></div>
 <div class="mosque"></div><div class="container">
   <div class="text" id="typing"></div>
 </div><div class="counter" id="count">Tasbeeh: 0</div>
 <button class="tasbeeh" onclick="tasbeehClick()">SubhanAllah 🤍</button><script>
-// stars generate
+// stars
 for(let i=0;i<50;i++){
  let s=document.createElement('div');
  s.className='star';
@@ -149,15 +163,23 @@ for(let i=0;i<50;i++){
  document.body.appendChild(s);
 }
 
-// message
-const msg=`Jummah Mubarak 🤲\n\nAaj ka din rehmaton ka din hai...\n\n<span class="arabic">اللّٰهُمَّ اجْعَلْهَا مِنْ نَصِيبِي</span>\n\n(Ae Allah, usay meri qismat ka hissa bana de)\n\nAaj ke din meri dua hai...\nAllah tumhein hamesha khush rakhe 💫\n\nAur agar meri koi dua qabool ho...\nto wo sirf tum ho ❤️\n\n- Zafran`;
+// message (fixed HTML rendering)
+const msg = `Jummah Mubarak 🤲<br><br>
+Aaj ka din rehmaton ka din hai...<br><br>
+<span class="arabic">اللّٰهُمَّ اجْعَلْهَا مِنْ نَصِيبِي</span>
+<span class="urdu">اے اللہ اسے میری قسمت کا حصہ بنا دے</span>
+Aaj ke din meri dua hai...<br>
+Allah tumhein hamesha khush rakhe 💫<br><br>
+Aur agar meri koi dua qabool ho...<br>
+to wo sirf tum ho ❤️<br><br>
+- Zafran`;
 
 let i=0;
 function type(){
  if(i<msg.length){
-  document.getElementById('typing').innerHTML+=msg.charAt(i);
+  document.getElementById('typing').innerHTML += msg.charAt(i);
   i++;
-  setTimeout(type,40);
+  setTimeout(type,30);
  }
 }
 
